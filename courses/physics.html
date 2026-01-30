@@ -1,0 +1,2079 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סיכום מעמיק - פיזיקה להנדסת תוכנה</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-card-hover: #1f3460;
+            --accent-blue: #4facfe;
+            --accent-cyan: #00f2fe;
+            --accent-purple: #a855f7;
+            --accent-pink: #f472b6;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
+            --gradient-green: linear-gradient(135deg, #34d399 0%, #00f2fe 100%);
+            --gradient-orange: linear-gradient(135deg, #fb923c 0%, #fbbf24 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Heebo', 'Noto Sans Hebrew', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.9;
+            min-height: 100vh;
+            font-size: 17px;
+        }
+
+        /* Background Effects */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(79, 172, 254, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.05) 0%, transparent 60%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(-2%, -2%) rotate(1deg);
+            }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 60px rgba(102, 126, 234, 0.5);
+        }
+
+        header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header .institution {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 54px;
+            z-index: 999;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            list-style: none;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-icon.blue {
+            background: var(--gradient-blue);
+        }
+
+        .section-icon.purple {
+            background: var(--gradient-purple);
+        }
+
+        .section-icon.green {
+            background: var(--gradient-green);
+        }
+
+        .section-icon.orange {
+            background: var(--gradient-orange);
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin: 2.5rem 0 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        section h3::before {
+            content: '▸';
+            color: var(--accent-purple);
+        }
+
+        section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-pink);
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(79, 172, 254, 0.15);
+        }
+
+        /* Explanation Box */
+        .explanation {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.08), rgba(0, 242, 254, 0.08));
+            border-right: 5px solid var(--accent-cyan);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .explanation strong {
+            color: var(--accent-cyan);
+        }
+
+        /* Physical Meaning */
+        .physical-meaning {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(244, 114, 182, 0.1));
+            border-right: 5px solid var(--accent-purple);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .physical-meaning::before {
+            content: '🔬 המשמעות הפיזיקלית: ';
+            font-weight: 700;
+            color: var(--accent-purple);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Example Box */
+        .example {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(0, 242, 254, 0.1));
+            border: 2px dashed var(--accent-green);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .example::before {
+            content: '📝 דוגמה: ';
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(168, 85, 247, 0.15));
+            border: 2px solid rgba(79, 172, 254, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .formula-box.key {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 191, 36, 0.2));
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 30px rgba(251, 146, 60, 0.2);
+        }
+
+        .formula-box .formula-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Warning/Important */
+        .warning {
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.15), rgba(251, 146, 60, 0.15));
+            border-right: 5px solid var(--accent-red);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning::before {
+            content: '⚠️ חשוב לזכור: ';
+            font-weight: 700;
+            color: var(--accent-red);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tip */
+        .tip {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(0, 242, 254, 0.15));
+            border-right: 5px solid var(--accent-green);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .tip::before {
+            content: '💡 טיפ למבחן: ';
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Common Mistakes */
+        .mistakes {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 146, 60, 0.15));
+            border-right: 5px solid var(--accent-yellow);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .mistakes::before {
+            content: '❌ טעויות נפוצות: ';
+            font-weight: 700;
+            color: var(--accent-yellow);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        th,
+        td {
+            padding: 1.2rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(168, 85, 247, 0.2));
+            font-weight: 600;
+            color: var(--accent-cyan);
+            font-size: 1.05rem;
+        }
+
+        tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            padding-right: 1.8rem;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.8rem 0;
+            color: var(--text-secondary);
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        /* Blockquote */
+        blockquote {
+            background: var(--bg-card);
+            border-right: 5px solid var(--accent-purple);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            counter-increment: step;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-number::before {
+            content: counter(step);
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 0.5rem;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            border: 2px solid var(--accent-purple);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.2);
+        }
+
+        .summary-box h3 {
+            color: var(--accent-pink);
+            margin-top: 0;
+        }
+
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-item h4 {
+            margin-top: 0;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+        }
+
+        .back-btn {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            background: var(--bg-secondary);
+        }
+
+        footer .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            nav ul {
+                gap: 0.3rem;
+            }
+
+            nav a {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Print */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+
+            .bg-effects,
+            nav {
+                display: none;
+            }
+
+            header {
+                padding: 1rem;
+            }
+
+            header h1 {
+                color: #333;
+                -webkit-text-fill-color: #333;
+            }
+
+            .card,
+            .formula-box,
+            .tip,
+            .warning,
+            .explanation {
+                border: 1px solid #ccc;
+                background: #f9f9f9 !important;
+                page-break-inside: avoid;
+            }
+
+            section {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-effects"></div>
+
+    <div class="top-nav">
+        <a href="../index.html" class="back-btn">→ חזרה לדף הראשי</a>
+    </div>
+
+    <header>
+        <h1>📚 סיכום מעמיק - פיזיקה</h1>
+        <p class="subtitle">כל מה שצריך לדעת למבחן עם הסברים מפורטים</p>
+        <p class="institution">המכללה האקדמית להנדסה בראודה - כרמיאל</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#vectors">וקטורים</a></li>
+            <li><a href="#kinematics">קינמטיקה</a></li>
+            <li><a href="#newton">חוקי ניוטון</a></li>
+            <li><a href="#forces">כוחות</a></li>
+            <li><a href="#energy">עבודה ואנרגיה</a></li>
+            <li><a href="#oscillations">תנודות</a></li>
+            <li><a href="#electrostatics">אלקטרוסטטיקה</a></li>
+            <li><a href="#circuits">מעגלים</a></li>
+            <li><a href="#optics">אופטיקה</a></li>
+            <li><a href="#strategy">אסטרטגיה</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- ==================== VECTORS ==================== -->
+        <section id="vectors">
+            <div class="section-header">
+                <div class="section-icon blue">📐</div>
+                <h2>וקטורים (Vectors)</h2>
+            </div>
+
+            <div class="card">
+                <h3>מהו וקטור?</h3>
+
+                <div class="explanation">
+                    <strong>וקטור</strong> הוא גודל פיזיקלי שיש לו גם <strong>גודל (עוצמה)</strong> וגם
+                    <strong>כיוון</strong>.
+                    לעומתו, <strong>סקלר</strong> הוא גודל שיש לו רק ערך מספרי (כמו מסה, טמפרטורה, זמן).
+                </div>
+
+                <div class="physical-meaning">
+                    חשבו על ההבדל בין "הלכתי 5 ק"מ" (סקלר - רק מרחק) לבין "הלכתי 5 ק"מ צפונה" (וקטור - יש גם כיוון).
+                    בפיזיקה, כוח, מהירות, תאוצה ותנע הם כולם וקטורים - לא מספיק לדעת "כמה", חייבים לדעת גם "לאן".
+                </div>
+
+                <h4>סימונים</h4>
+                <ul>
+                    <li><strong>וקטור:</strong> \(\vec{A}\) (חץ מעל האות) או \(\mathbf{A}\) (אות מודגשת)</li>
+                    <li><strong>גודל הוקטור:</strong> \(|\vec{A}| = A\) (הערך המוחלט או האות ללא חץ)</li>
+                    <li><strong>וקטור יחידה:</strong> \(\hat{A}\) (כובע מעל האות) - וקטור באורך 1 בכיוון של \(\vec{A}\)
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>ייצוג וקטור בקואורדינטות קרטזיות</h3>
+
+                <div class="explanation">
+                    כל וקטור במרחב תלת-ממדי ניתן לפרק לשלושה <strong>רכיבים</strong> בכיווני הצירים x, y, z.
+                    זה כמו לתאר איך להגיע מנקודה אחת לאחרת: "לך 3 מטר ימינה, 4 מטר קדימה, ו-2 מטר למעלה".
+                </div>
+
+                <div class="formula-box">
+                    \[\vec{A} = A_x \hat{x} + A_y \hat{y} + A_z \hat{z}\]
+                </div>
+
+                <p>כאשר \(\hat{x}, \hat{y}, \hat{z}\) הם וקטורי היחידה בכיווני הצירים.</p>
+
+                <h4>חישוב הגודל מהרכיבים</h4>
+                <div class="formula-box key">
+                    <div class="formula-title">משפט פיתגורס התלת-ממדי</div>
+                    \[|\vec{A}| = A = \sqrt{A_x^2 + A_y^2 + A_z^2}\]
+                </div>
+
+                <div class="example">
+                    אם \(\vec{A} = 3\hat{x} + 4\hat{y}\), אז הגודל הוא \(A = \sqrt{3^2 + 4^2} = \sqrt{9+16} = \sqrt{25}
+                    = 5\)
+                </div>
+
+                <h4>וקטור היחידה (הכיוון)</h4>
+                <div class="formula-box">
+                    \[\hat{A} = \frac{\vec{A}}{|\vec{A}|} = \frac{\vec{A}}{A}\]
+                </div>
+
+                <div class="physical-meaning">
+                    וקטור היחידה "שומר" רק את הכיוון של הוקטור ו"מוחק" את הגודל.
+                    הוא תמיד באורך 1. זה שימושי כשרוצים לדבר רק על כיוון בלי להתייחס לעוצמה.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>פעולות על וקטורים</h3>
+
+                <h4>חיבור וקטורים</h4>
+                <div class="explanation">
+                    מחברים רכיב-רכיב: \(\vec{A} + \vec{B} = (A_x + B_x)\hat{x} + (A_y + B_y)\hat{y} + (A_z +
+                    B_z)\hat{z}\)
+                </div>
+                <div class="physical-meaning">
+                    גיאומטרית, זה כמו לשים את הוקטורים "ראש לזנב" - סוף אחד מתחבר לתחילת השני.
+                </div>
+
+                <h4>כפל בסקלר</h4>
+                <div class="formula-box">
+                    \[\lambda \vec{A} = \lambda A_x \hat{x} + \lambda A_y \hat{y} + \lambda A_z \hat{z}\]
+                </div>
+                <div class="physical-meaning">
+                    כפל בסקלר חיובי משנה רק את הגודל. כפל בסקלר שלילי גם הופך את הכיוון.
+                </div>
+
+                <h4>מכפלה סקלרית (מכפלה פנימית / Dot Product)</h4>
+                <div class="formula-box key">
+                    \[\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}| \cos \theta = A_x B_x + A_y B_y + A_z B_z\]
+                </div>
+
+                <div class="physical-meaning">
+                    המכפלה הסקלרית מודדת "כמה שני וקטורים מצביעים באותו כיוון".
+                    <ul>
+                        <li>אם הם מקבילים (θ=0°): התוצאה מקסימלית (\(AB\))</li>
+                        <li>אם הם מאונכים (θ=90°): התוצאה אפס (אין רכיב משותף)</li>
+                        <li>אם הם הפוכים (θ=180°): התוצאה שלילית (\(-AB\))</li>
+                    </ul>
+                </div>
+
+                <div class="tip">
+                    <strong>שימושים נפוצים של המכפלה הסקלרית:</strong>
+                    <ol>
+                        <li>חישוב זווית בין וקטורים: \(\cos\theta = \frac{\vec{A} \cdot \vec{B}}{AB}\)</li>
+                        <li>בדיקת ניצבות: אם \(\vec{A} \cdot \vec{B} = 0\), הוקטורים מאונכים</li>
+                        <li>חישוב עבודה: \(W = \vec{F} \cdot \vec{d}\)</li>
+                        <li>מציאת רכיב של וקטור בכיוון מסוים: \(A_{\hat{n}} = \vec{A} \cdot \hat{n}\)</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>וקטור המקום</h3>
+
+                <div class="formula-box">
+                    \[\vec{r} = x \hat{x} + y \hat{y} + z \hat{z}\]
+                </div>
+
+                <div class="physical-meaning">
+                    וקטור המקום \(\vec{r}\) מתאר את המיקום של גוף ביחס לראשית הצירים.
+                    הוא "חץ" שמתחיל בראשית ומסתיים במיקום הגוף.
+                    כשהגוף זז, וקטור המקום משתנה עם הזמן: \(\vec{r}(t)\).
+                </div>
+
+                <div class="warning">
+                    וקטור המקום תלוי בבחירת הראשית! אם תזיזו את הראשית, וקטור המקום ישתנה גם אם הגוף לא זז.
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== KINEMATICS ==================== -->
+        <section id="kinematics">
+            <div class="section-header">
+                <div class="section-icon purple">🚀</div>
+                <h2>קינמטיקה (Kinematics)</h2>
+            </div>
+
+            <div class="card">
+                <h3>מהי קינמטיקה?</h3>
+
+                <div class="explanation">
+                    <strong>קינמטיקה</strong> היא תורת התנועה - היא מתארת <em>איך</em> גופים זזים (מיקום, מהירות, תאוצה)
+                    בלי להתעניין <em>למה</em> הם זזים (כוחות). זה כמו לתאר מסלול של מכונית בלי לדבר על המנוע או הכבישים.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>שלושת הגדלים הקינמטיים</h3>
+
+                <h4>1. מיקום \(\vec{r}(t)\)</h4>
+                <div class="explanation">
+                    היכן הגוף נמצא בכל רגע נתון. זהו וקטור המקום כפונקציה של הזמן.
+                </div>
+
+                <h4>2. מהירות \(\vec{v}(t)\)</h4>
+                <div class="formula-box key">
+                    \[\vec{v} = \frac{d\vec{r}}{dt} = \dot{\vec{r}}\]
+                </div>
+                <div class="physical-meaning">
+                    המהירות היא <strong>קצב השינוי של המיקום</strong>. היא אומרת לנו באיזה כיוון ובאיזה קצב הגוף זז.
+                    הנקודה מעל \(\vec{r}\) היא סימון מקוצר לנגזרת לפי הזמן.
+                </div>
+
+                <h4>3. תאוצה \(\vec{a}(t)\)</h4>
+                <div class="formula-box key">
+                    \[\vec{a} = \frac{d\vec{v}}{dt} = \dot{\vec{v}} = \ddot{\vec{r}}\]
+                </div>
+                <div class="physical-meaning">
+                    התאוצה היא <strong>קצב השינוי של המהירות</strong>. היא אומרת לנו האם הגוף מאיץ, מאט, או משנה כיוון.
+                    שתי נקודות מעל \(\vec{r}\) זה נגזרת שנייה (נגזרת של נגזרת).
+                </div>
+
+                <div class="warning">
+                    <strong>תאוצה ≠ מהירות!</strong>
+                    <ul>
+                        <li>גוף יכול לנוע מהר בלי תאוצה (תנועה קבועה)</li>
+                        <li>גוף יכול לעמוד במקום עם תאוצה (רגע לפני שמתחיל לזוז)</li>
+                        <li>גוף יכול להאט למרות שהתאוצה בכיוון התנועה (אם התאוצה שלילית)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>הקשר בין נגזרות לאינטגרלים</h3>
+
+                <table>
+                    <tr>
+                        <th>מעבר</th>
+                        <th>נגזרת (גזירה)</th>
+                        <th>אינטגרל (אינטגרציה)</th>
+                    </tr>
+                    <tr>
+                        <td>מיקום ↔ מהירות</td>
+                        <td>\(\vec{v} = \dot{\vec{r}}\)</td>
+                        <td>\(\vec{r}(t) = \vec{r}_0 + \int_{0}^{t} \vec{v}(\tau) d\tau\)</td>
+                    </tr>
+                    <tr>
+                        <td>מהירות ↔ תאוצה</td>
+                        <td>\(\vec{a} = \dot{\vec{v}}\)</td>
+                        <td>\(\vec{v}(t) = \vec{v}_0 + \int_{0}^{t} \vec{a}(\tau) d\tau\)</td>
+                    </tr>
+                </table>
+
+                <div class="physical-meaning">
+                    <strong>לגזור</strong> = למצוא קצב שינוי (ללכת "למעלה" בטבלה)<br>
+                    <strong>לאינטגר</strong> = לסכום שינויים קטנים (ללכת "למטה" בטבלה)<br><br>
+                    אם נתונה התאוצה ורוצים מהירות → אינטגרל<br>
+                    אם נתונה המהירות ורוצים מיקום → אינטגרל<br>
+                    אם נתון המיקום ורוצים מהירות → נגזרת
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>תנועה בתאוצה קבועה - המקרה החשוב ביותר!</h3>
+
+                <div class="explanation">
+                    כשהתאוצה קבועה (לא משתנה עם הזמן), האינטגרלים פשוטים ומקבלים נוסחאות סגורות.
+                    זה המקרה הנפוץ ביותר בבעיות (נפילה חופשית, זריקה, וכו').
+                </div>
+
+                <div class="formula-box key">
+                    <div class="formula-title">שלוש נוסחאות התנועה (חייבים לזכור!)</div>
+                    \[v(t) = v_0 + at\]
+                    \[x(t) = x_0 + v_0 t + \frac{1}{2}at^2\]
+                    \[v^2 = v_0^2 + 2a\Delta x\]
+                </div>
+
+                <div class="tip">
+                    <strong>מתי להשתמש בכל נוסחה?</strong>
+                    <ul>
+                        <li><strong>נוסחה 1:</strong> כשיש לכם זמן ואין צורך במיקום</li>
+                        <li><strong>נוסחה 2:</strong> כשרוצים מיקום כפונקציה של זמן</li>
+                        <li><strong>נוסחה 3:</strong> כשאין זמן! מקשרת ישירות מהירות למיקום</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    <strong>נפילה חופשית:</strong> כדור נזרק למעלה במהירות 20 m/s. מה הגובה המקסימלי?<br><br>
+                    <strong>פתרון:</strong> בגובה המקסימלי, \(v = 0\). נשתמש בנוסחה 3:<br>
+                    \(0 = 20^2 + 2(-10)\Delta x\)<br>
+                    \(0 = 400 - 20\Delta x\)<br>
+                    \(\Delta x = 20\) מטר
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>תנועה דו-ממדית: זריקה אלכסונית</h3>
+
+                <div class="physical-meaning">
+                    בזריקה אלכסונית, התנועה בציר x ובציר y הן <strong>בלתי תלויות</strong>!
+                    <ul>
+                        <li><strong>ציר x (אופקי):</strong> אין תאוצה → תנועה במהירות קבועה</li>
+                        <li><strong>ציר y (אנכי):</strong> תאוצה \(-g\) → נפילה חופשית</li>
+                    </ul>
+                </div>
+
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>ציר X (אופקי)</th>
+                        <th>ציר Y (אנכי)</th>
+                    </tr>
+                    <tr>
+                        <td>תאוצה</td>
+                        <td>\(a_x = 0\)</td>
+                        <td>\(a_y = -g\)</td>
+                    </tr>
+                    <tr>
+                        <td>מהירות</td>
+                        <td>\(v_x = v_0 \cos\theta\) (קבועה)</td>
+                        <td>\(v_y = v_0 \sin\theta - gt\)</td>
+                    </tr>
+                    <tr>
+                        <td>מיקום</td>
+                        <td>\(x = v_0 \cos\theta \cdot t\)</td>
+                        <td>\(y = v_0 \sin\theta \cdot t - \frac{1}{2}gt^2\)</td>
+                    </tr>
+                </table>
+
+                <div class="tip">
+                    <strong>אסטרטגיה לפתרון בעיות זריקה:</strong>
+                    <ol>
+                        <li>פרקו את המהירות ההתחלתית לרכיבים: \(v_{0x} = v_0\cos\theta\), \(v_{0y} = v_0\sin\theta\)
+                        </li>
+                        <li>כתבו את משוואות התנועה בנפרד לכל ציר</li>
+                        <li>השתמשו בתנאים שניתנו (גובה סופי, טווח, וכו') כדי למצוא את הזמן</li>
+                        <li>הציבו חזרה כדי למצוא את מה שנשאל</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>תנועה מעגלית</h3>
+
+                <div class="explanation">
+                    בתנועה מעגלית, הגוף נע לאורך מעגל ברדיוס \(R\). גם אם המהירות קבועה בגודלה, יש תאוצה כי הכיוון
+                    משתנה!
+                </div>
+
+                <h4>גדלים בסיסיים</h4>
+                <table>
+                    <tr>
+                        <th>גודל</th>
+                        <th>סימון</th>
+                        <th>נוסחה</th>
+                        <th>משמעות</th>
+                    </tr>
+                    <tr>
+                        <td>מהירות זוויתית</td>
+                        <td>\(\omega\)</td>
+                        <td>\(\omega = \dot{\theta}\)</td>
+                        <td>קצב שינוי הזווית [rad/s]</td>
+                    </tr>
+                    <tr>
+                        <td>מהירות קווית</td>
+                        <td>\(v\)</td>
+                        <td>\(v = \omega R\)</td>
+                        <td>מהירות לאורך המסלול [m/s]</td>
+                    </tr>
+                    <tr>
+                        <td>תאוצה משיקית</td>
+                        <td>\(a_\parallel\)</td>
+                        <td>\(a_\parallel = \dot{\omega} R\)</td>
+                        <td>משנה את גודל המהירות</td>
+                    </tr>
+                    <tr>
+                        <td>תאוצה רדיאלית</td>
+                        <td>\(a_\perp\)</td>
+                        <td>\(a_\perp = \omega^2 R = \frac{v^2}{R}\)</td>
+                        <td>משנה את כיוון המהירות</td>
+                    </tr>
+                </table>
+
+                <div class="physical-meaning">
+                    <strong>התאוצה הרדיאלית (צנטריפטלית)</strong> תמיד מכוונת למרכז המעגל.
+                    היא "מושכת" את הגוף פנימה ומונעת ממנו להמשיך בקו ישר.
+                    בלעדיה, הגוף היה "עף" ממסלול המעגל.
+                </div>
+
+                <div class="warning">
+                    גם בתנועה מעגלית אחידה (מהירות קבועה) יש תאוצה!
+                    התאוצה הרדיאלית \(\frac{v^2}{R}\) קיימת תמיד בתנועה מעגלית.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>מהירות יחסית</h3>
+
+                <div class="formula-box">
+                    \[\vec{v}_{AC} = \vec{v}_{AB} + \vec{v}_{BC}\]
+                </div>
+
+                <div class="physical-meaning">
+                    מהירות של A ביחס ל-C = מהירות של A ביחס ל-B + מהירות של B ביחס ל-C.<br><br>
+                    <strong>דוגמה:</strong> אדם הולך על סיפון ספינה במהירות 2 m/s קדימה, והספינה שטה במהירות 10 m/s.
+                    מהירות האדם ביחס לחוף היא 12 m/s (אם הולך בכיוון הספינה) או 8 m/s (אם הולך נגדה).
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== NEWTON'S LAWS ==================== -->
+        <section id="newton">
+            <div class="section-header">
+                <div class="section-icon green">⚖️</div>
+                <h2>חוקי ניוטון (Newton's Laws)</h2>
+            </div>
+
+            <div class="card">
+                <h3>החוק הראשון - חוק ההתמדה</h3>
+
+                <blockquote>
+                    גוף ישאר במנוחה או בתנועה במהירות קבועה בקו ישר, אלא אם פועל עליו כוח חיצוני.
+                </blockquote>
+
+                <div class="physical-meaning">
+                    גופים "רוצים" להמשיך במה שהם עושים. אם הם במנוחה - ישארו במנוחה. אם הם זזים - ימשיכו לזוז באותו
+                    כיוון ובאותה מהירות.
+                    צריך כוח כדי <em>לשנות</em> את מצב התנועה, לא כדי <em>לשמר</em> אותו.
+                </div>
+
+                <div class="example">
+                    כשמכונית בולמת פתאום, הנוסעים "נזרקים" קדימה - לא בגלל כוח שדוחף אותם,
+                    אלא כי הגוף שלהם רוצה להמשיך לנוע קדימה (התמדה) בזמן שהמכונית נעצרת.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>החוק השני - חוק התנועה</h3>
+
+                <div class="formula-box key">
+                    \[\sum \vec{F} = m\vec{a}\]
+                </div>
+
+                <div class="physical-meaning">
+                    <strong>זהו החוק החשוב ביותר בפיזיקה!</strong><br><br>
+                    הוא אומר שסכום כל הכוחות על גוף שווה למסה כפול תאוצה.
+                    <ul>
+                        <li>יותר כוח → יותר תאוצה</li>
+                        <li>יותר מסה → פחות תאוצה (קשה יותר להזיז)</li>
+                        <li>כיוון התאוצה = כיוון סכום הכוחות</li>
+                    </ul>
+                </div>
+
+                <div class="tip">
+                    <strong>איך להשתמש בחוק השני:</strong>
+                    <ol>
+                        <li>ציירו דיאגרמת גוף חופשי (כל הכוחות על הגוף)</li>
+                        <li>בחרו מערכת צירים (לרוב: x בכיוון התנועה)</li>
+                        <li>כתבו \(\sum F_x = ma_x\) ו-\(\sum F_y = ma_y\)</li>
+                        <li>פתרו את המשוואות</li>
+                    </ol>
+                </div>
+
+                <div class="mistakes">
+                    <ul>
+                        <li>לשכוח כוחות (כבידה, נורמל, חיכוך)</li>
+                        <li>להתבלבל בין מסה לכוח</li>
+                        <li>לשכוח שהתאוצה היא וקטור (יש לה כיוון!)</li>
+                        <li>לכתוב \(F = ma\) במקום \(\sum F = ma\) (צריך את <em>סכום</em> הכוחות)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>החוק השלישי - פעולה ותגובה</h3>
+
+                <blockquote>
+                    לכל כוח יש כוח נגדי שווה בגודל והפוך בכיוון.
+                </blockquote>
+
+                <div class="formula-box">
+                    \[\vec{F}_{AB} = -\vec{F}_{BA}\]
+                </div>
+
+                <div class="physical-meaning">
+                    כשגוף A דוחף את גוף B, גוף B דוחף בחזרה את A באותה עוצמה אבל בכיוון הפוך.
+                    <strong>חשוב:</strong> שני הכוחות פועלים על גופים <em>שונים</em>!
+                </div>
+
+                <div class="example">
+                    כשאתם דוחפים קיר, הקיר דוחף אתכם בחזרה. כשכדור הארץ מושכת אתכם למטה, אתם מושכים את כדור הארץ למעלה
+                    (באותה עוצמה!).
+                </div>
+
+                <div class="warning">
+                    זוג הכוחות של החוק השלישי <strong>לעולם לא מבטלים זה את זה</strong> כי הם פועלים על גופים שונים!
+                    כשעושים חוק שני, מסתכלים רק על הכוחות שפועלים על גוף <em>אחד</em>.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>תנע ומתקף</h3>
+
+                <h4>תנע (Momentum)</h4>
+                <div class="formula-box">
+                    \[\vec{p} = m\vec{v}\]
+                </div>
+
+                <div class="physical-meaning">
+                    התנע מודד את "כמות התנועה" של גוף. גוף כבד שנע מהר יש לו תנע גדול.
+                    משאית שנוסעת 10 קמ"ש יכולה להיות עם תנע גדול יותר ממכונית שנוסעת 100 קמ"ש.
+                </div>
+
+                <h4>מתקף (Impulse)</h4>
+                <div class="formula-box">
+                    \[\vec{I} = \int_{t_1}^{t_2} \vec{F} \, dt = \Delta \vec{p}\]
+                </div>
+
+                <div class="physical-meaning">
+                    המתקף הוא "סה"כ הדחיפה" שכוח נותן לגוף במשך זמן מסוים.
+                    הוא שווה לשינוי בתנע. זה מסביר למה כריות אוויר עובדות - הן מאריכות את זמן ההתנגשות,
+                    כך שאותו שינוי בתנע מתרחש עם כוח קטן יותר.
+                </div>
+
+                <h4>שימור תנע</h4>
+                <div class="formula-box key">
+                    <div class="formula-title">אם אין כוחות חיצוניים:</div>
+                    \[\vec{p}_{total} = \text{const} \quad \Rightarrow \quad \sum m_i \vec{v}_i^{before} = \sum m_i
+                    \vec{v}_i^{after}\]
+                </div>
+
+                <div class="tip">
+                    שימור תנע הוא הכלי העיקרי לפתרון בעיות <strong>התנגשויות</strong>!
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FORCES ==================== -->
+        <section id="forces">
+            <div class="section-header">
+                <div class="section-icon orange">💪</div>
+                <h2>כוחות (Forces)</h2>
+            </div>
+
+            <div class="card">
+                <h3>כוח הכבידה</h3>
+
+                <h4>חוק הכבידה של ניוטון</h4>
+                <div class="formula-box">
+                    \[F = G\frac{m_1 m_2}{r^2}\]
+                </div>
+                <p>כאשר \(G = 6.67 \times 10^{-11} \frac{Nm^2}{kg^2}\) הוא קבוע הכבידה.</p>
+
+                <div class="physical-meaning">
+                    כל שני גופים בעלי מסה מושכים זה את זה. הכוח יורד עם ריבוע המרחק -
+                    אם תכפילו את המרחק, הכוח יקטן פי 4.
+                </div>
+
+                <h4>ליד פני כדור הארץ</h4>
+                <div class="formula-box key">
+                    \[\vec{F}_g = m\vec{g} \quad \text{כאשר} \quad g \approx 9.8 \, m/s^2\]
+                </div>
+
+                <div class="explanation">
+                    כשאנחנו קרובים לפני כדור הארץ, \(g = \frac{GM}{R^2}\) כמעט קבוע,
+                    ולכן פשוט כותבים \(F = mg\) כלפי מטה.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>כוח נורמלי</h3>
+
+                <div class="physical-meaning">
+                    הכוח הנורמלי הוא כוח המגע שמשטח מפעיל על גוף שנשען עליו.
+                    הוא תמיד <strong>ניצב למשטח</strong> ו<strong>דוחף</strong> (לא מושך).
+                </div>
+
+                <div class="warning">
+                    הכוח הנורמלי <strong>לא תמיד שווה ל-mg!</strong>
+                    <ul>
+                        <li>במשטח משופע: \(N = mg\cos\theta\)</li>
+                        <li>במעלית שמאיצה למעלה: \(N > mg\)</li>
+                        <li>במעלית שמאיצה למטה: \(N < mg\)</li>
+                    </ul>
+                    תמיד חשבו את N מחוק ניוטון השני!
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>כוח חיכוך</h3>
+
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h4>חיכוך סטטי</h4>
+                        <div class="formula-box">
+                            \[f_s \leq \mu_s N\]
+                        </div>
+                        <p>כשאין החלקה בין המשטחים</p>
+                        <p><strong>גודלו נקבע ממשוואות התנועה!</strong></p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>חיכוך קינטי</h4>
+                        <div class="formula-box">
+                            \[f_k = \mu_k N\]
+                        </div>
+                        <p>כשיש החלקה בין המשטחים</p>
+                        <p><strong>כיוון: נגד המהירות היחסית</strong></p>
+                    </div>
+                </div>
+
+                <div class="physical-meaning">
+                    <strong>חיכוך סטטי</strong> מונע התחלת תנועה. הוא "מתאים את עצמו" לכוח שמנסה להזיז את הגוף, עד
+                    למקסימום \(\mu_s N\).
+                    <br><br>
+                    <strong>חיכוך קינטי</strong> מתנגד לתנועה קיימת. הוא תמיד בדיוק \(\mu_k N\), ללא קשר למהירות.
+                </div>
+
+                <div class="tip">
+                    בדרך כלל \(\mu_s > \mu_k\) - קל יותר להמשיך להזיז משהו מאשר להתחיל להזיז אותו.
+                </div>
+
+                <div class="mistakes">
+                    <ul>
+                        <li>לכתוב \(f_s = \mu_s N\) במקום \(f_s \leq \mu_s N\) (החיכוך הסטטי יכול להיות <em>עד</em> הערך
+                            הזה)</li>
+                        <li>לשכוח שכיוון החיכוך הקינטי הוא נגד המהירות <em>היחסית</em>, לא נגד כיוון התנועה</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>כוח קפיץ - חוק הוק</h3>
+
+                <div class="formula-box key">
+                    \[\vec{F} = -kx\hat{x}\]
+                </div>
+
+                <div class="physical-meaning">
+                    הכוח פרופורציונלי להתארכות/התכווצות מנקודת שיווי המשקל.
+                    <ul>
+                        <li>\(k\) = קבוע הקפיץ (קשיחות) - קפיץ קשה יותר = k גדול יותר</li>
+                        <li>\(x\) = ההזזה מנקודת שיווי המשקל</li>
+                        <li>הסימן השלילי = הכוח תמיד מחזיר לנקודת שיווי המשקל</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>מתיחות בחוט</h3>
+
+                <div class="explanation">
+                    <strong>חוט אידאלי</strong> הוא:
+                    <ul>
+                        <li>חסר מסה</li>
+                        <li>בעל אורך קבוע (לא נמתח)</li>
+                        <li>מפעיל כוח רק ע"י משיכה (לא יכול לדחוף)</li>
+                    </ul>
+                </div>
+
+                <div class="physical-meaning">
+                    בחוט אידאלי, המתיחות זהה בכל נקודה לאורך החוט.
+                    אם שני גופים מחוברים בחוט מעל גלגלת אידאלית, המתיחות שפועלת על שניהם זהה.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>כוח גרר (התנגדות אוויר/נוזל)</h3>
+
+                <div class="formula-box">
+                    \[\vec{f} = -(bv + cv^2)\hat{v}\]
+                </div>
+
+                <div class="physical-meaning">
+                    כוח הגרר מתנגד לתנועה דרך תווך (אוויר, מים).
+                    במהירויות נמוכות הוא פרופורציונלי ל-v, במהירויות גבוהות ל-\(v^2\).
+                </div>
+
+                <div class="tip">
+                    כוח הגרר מסביר את מושג <strong>מהירות סופית</strong>: כשנופלים, כוח הגרר גדל עם המהירות
+                    עד שהוא משתווה לכוח הכבידה, ואז אין יותר תאוצה והמהירות נשארת קבועה.
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ENERGY ==================== -->
+        <section id="energy">
+            <div class="section-header">
+                <div class="section-icon blue">⚡</div>
+                <h2>עבודה ואנרגיה (Work & Energy)</h2>
+            </div>
+
+            <div class="card">
+                <h3>למה אנרגיה?</h3>
+
+                <div class="explanation">
+                    גישת האנרגיה היא אלטרנטיבה לחוקי ניוטון. במקום לעקוב אחרי כוחות ותאוצות,
+                    אנחנו עוקבים אחרי "משהו שנשמר" - האנרגיה. זה מפשט מאוד בעיות רבות!
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>עבודה (Work)</h3>
+
+                <div class="formula-box key">
+                    \[W = \int \vec{F} \cdot d\vec{r} = \int F \cos\theta \, ds\]
+                </div>
+
+                <div class="physical-meaning">
+                    עבודה היא "העברת אנרגיה באמצעות כוח".
+                    רק הרכיב של הכוח בכיוון התנועה עושה עבודה.
+                    <ul>
+                        <li>כוח בכיוון התנועה → עבודה חיובית (מוסיף אנרגיה)</li>
+                        <li>כוח נגד התנועה → עבודה שלילית (מוציא אנרגיה)</li>
+                        <li>כוח ניצב לתנועה → אפס עבודה</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    כשאתם מרימים ארגז, אתם עושים עבודה חיובית (כוח למעלה, תנועה למעלה).
+                    הכבידה עושה עבודה שלילית (כוח למטה, תנועה למעלה).
+                    הכוח הנורמלי על רצפה שטוחה עושה אפס עבודה (כוח למעלה, תנועה אופקית - ניצבים).
+                </div>
+
+                <h4>מקרים פשוטים</h4>
+                <table>
+                    <tr>
+                        <th>מקרה</th>
+                        <th>נוסחה</th>
+                    </tr>
+                    <tr>
+                        <td>כוח קבוע, תנועה ישרה</td>
+                        <td>\(W = F d \cos\theta\)</td>
+                    </tr>
+                    <tr>
+                        <td>כוח קבוע בכיוון התנועה</td>
+                        <td>\(W = Fd\)</td>
+                    </tr>
+                    <tr>
+                        <td>כוח קפיץ</td>
+                        <td>\(W = -\frac{1}{2}k(x_f^2 - x_i^2)\)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>הספק (Power)</h3>
+
+                <div class="formula-box">
+                    \[P = \frac{dW}{dt} = \vec{F} \cdot \vec{v}\]
+                </div>
+
+                <div class="physical-meaning">
+                    הספק הוא קצב עשיית עבודה - כמה אנרגיה מועברת ליחידת זמן.
+                    יחידות: ואט [W] = ג'אול לשנייה [J/s].
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>אנרגיה קינטית</h3>
+
+                <div class="formula-box key">
+                    \[E_k = \frac{1}{2}mv^2\]
+                </div>
+
+                <div class="physical-meaning">
+                    אנרגיה קינטית היא "אנרגיית תנועה". גוף שזז יש לו יכולת לעשות עבודה (לדחוף משהו, להזיז משהו).
+                    שימו לב שהיא תלויה ב-\(v^2\) - כפול מהירות = פי 4 אנרגיה קינטית!
+                </div>
+
+                <h4>משפט עבודה-אנרגיה</h4>
+                <div class="formula-box key">
+                    \[W_{total} = \Delta E_k = \frac{1}{2}mv_f^2 - \frac{1}{2}mv_i^2\]
+                </div>
+
+                <div class="physical-meaning">
+                    העבודה הכוללת שנעשית על גוף שווה לשינוי באנרגיה הקינטית שלו.
+                    זה נכון <strong>תמיד</strong>, לא משנה אילו כוחות פועלים!
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>אנרגיה פוטנציאלית</h3>
+
+                <div class="explanation">
+                    אנרגיה פוטנציאלית היא אנרגיה "מאוחסנת" במצב של הגוף.
+                    היא קשורה לכוחות <strong>משמרים</strong> - כוחות שהעבודה שלהם לא תלויה במסלול, רק בנקודות ההתחלה
+                    והסיום.
+                </div>
+
+                <table>
+                    <tr>
+                        <th>סוג</th>
+                        <th>נוסחה</th>
+                        <th>מתי להשתמש</th>
+                    </tr>
+                    <tr>
+                        <td>כבידה (g קבוע)</td>
+                        <td>\(U = mgh\)</td>
+                        <td>ליד פני כדור הארץ</td>
+                    </tr>
+                    <tr>
+                        <td>כבידה (כללי)</td>
+                        <td>\(U = -\frac{GMm}{r}\)</td>
+                        <td>מרחקים גדולים, לוויינים</td>
+                    </tr>
+                    <tr>
+                        <td>קפיץ</td>
+                        <td>\(U = \frac{1}{2}kx^2\)</td>
+                        <td>קפיצים, מערכות אלסטיות</td>
+                    </tr>
+                </table>
+
+                <div class="warning">
+                    האנרגיה הפוטנציאלית מוגדרת עד כדי קבוע! צריך לבחור נקודת ייחוס (איפה \(U=0\)).
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>שימור אנרגיה מכנית</h3>
+
+                <div class="formula-box key">
+                    <div class="formula-title">אם פועלים רק כוחות משמרים:</div>
+                    \[E = E_k + U = \text{const}\]
+                    \[\frac{1}{2}mv_i^2 + U_i = \frac{1}{2}mv_f^2 + U_f\]
+                </div>
+
+                <div class="physical-meaning">
+                    אם אין חיכוך או כוחות אחרים שמפזרים אנרגיה,
+                    סכום האנרגיה הקינטית והפוטנציאלית נשאר קבוע.
+                    אנרגיה יכולה "לעבור" מקינטית לפוטנציאלית וחזרה, אבל הסכום נשמר.
+                </div>
+
+                <div class="example">
+                    כדור נזרק למעלה:
+                    <ul>
+                        <li>למטה: הרבה \(E_k\), מעט \(U\)</li>
+                        <li>בדרך למעלה: \(E_k\) יורדת, \(U\) עולה</li>
+                        <li>בנקודה הגבוהה ביותר: אפס \(E_k\), מקסימום \(U\)</li>
+                        <li>בדרך למטה: \(U\) יורדת, \(E_k\) עולה</li>
+                    </ul>
+                    הסכום תמיד אותו דבר!
+                </div>
+
+                <div class="tip">
+                    <strong>מתי להשתמש בשימור אנרגיה?</strong>
+                    <ul>
+                        <li>כשרוצים לקשר מהירות למיקום בלי לעבור דרך הזמן</li>
+                        <li>כשהמסלול מסובך אבל מתחילים ומסיימים בנקודות ידועות</li>
+                        <li>כשאין חיכוך או כוחות לא-משמרים אחרים</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>כוחות לא-משמרים</h3>
+
+                <div class="explanation">
+                    אם יש חיכוך או כוחות אחרים שמפזרים אנרגיה (לחום, לעיוות וכו'),
+                    האנרגיה המכנית <strong>לא נשמרת</strong>. במקרה זה:
+                </div>
+
+                <div class="formula-box">
+                    \[E_f = E_i + W_{non-conservative}\]
+                </div>
+
+                <div class="physical-meaning">
+                    העבודה של כוחות לא-משמרים (כמו חיכוך) בדרך כלל שלילית - הם "גונבים" אנרגיה מהמערכת והופכים אותה
+                    לחום.
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== OSCILLATIONS ==================== -->
+        <section id="oscillations">
+            <div class="section-header">
+                <div class="section-icon purple">〰️</div>
+                <h2>תנודות (Oscillations)</h2>
+            </div>
+
+            <div class="card">
+                <h3>תנודות הרמוניות פשוטות (SHM)</h3>
+
+                <div class="explanation">
+                    תנודה הרמונית פשוטה מתרחשת כשכוח המחזיר פרופורציונלי להזזה מנקודת שיווי המשקל.
+                    זה קורה בקפיצים, מטוטלות קטנות, ומערכות רבות אחרות.
+                </div>
+
+                <h4>משוואת התנועה</h4>
+                <div class="formula-box">
+                    \[\ddot{x} + \omega_0^2 x = 0\]
+                </div>
+
+                <h4>הפתרון הכללי</h4>
+                <div class="formula-box key">
+                    \[x(t) = A\cos(\omega_0 t + \phi)\]
+                </div>
+
+                <div class="physical-meaning">
+                    <ul>
+                        <li>\(A\) = <strong>אמפליטודה</strong> - המרחק המקסימלי מנקודת שיווי המשקל</li>
+                        <li>\(\omega_0\) = <strong>תדירות זוויתית</strong> - כמה מהר התנודה מתרחשת</li>
+                        <li>\(\phi\) = <strong>פאזה התחלתית</strong> - "איפה התחלנו" במחזור</li>
+                    </ul>
+                </div>
+
+                <h4>קשרים בין הגדלים</h4>
+                <table>
+                    <tr>
+                        <th>גודל</th>
+                        <th>סימון</th>
+                        <th>נוסחה</th>
+                        <th>יחידות</th>
+                    </tr>
+                    <tr>
+                        <td>תדירות זוויתית</td>
+                        <td>\(\omega_0\)</td>
+                        <td>\(\omega_0 = \sqrt{\frac{k}{m}}\) (קפיץ)</td>
+                        <td>[rad/s]</td>
+                    </tr>
+                    <tr>
+                        <td>מחזור</td>
+                        <td>\(T\)</td>
+                        <td>\(T = \frac{2\pi}{\omega_0}\)</td>
+                        <td>[s]</td>
+                    </tr>
+                    <tr>
+                        <td>תדירות</td>
+                        <td>\(f\)</td>
+                        <td>\(f = \frac{1}{T} = \frac{\omega_0}{2\pi}\)</td>
+                        <td>[Hz]</td>
+                    </tr>
+                </table>
+
+                <div class="tip">
+                    <strong>איך למצוא \(A\) ו-\(\phi\) מתנאי התחלה?</strong>
+                    <br>
+                    אם ב-\(t=0\) המיקום הוא \(x_0\) והמהירות \(v_0\):
+                    <ul>
+                        <li>\(A = \sqrt{x_0^2 + \frac{v_0^2}{\omega_0^2}}\)</li>
+                        <li>\(\tan\phi = -\frac{v_0}{\omega_0 x_0}\)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>אנרגיה בתנודות הרמוניות</h3>
+
+                <div class="formula-box">
+                    \[E = \frac{1}{2}kA^2 = \frac{1}{2}mv_{max}^2 = \text{const}\]
+                </div>
+
+                <div class="physical-meaning">
+                    האנרגיה נשמרת ו"מתנדנדת" בין קינטית לפוטנציאלית:
+                    <ul>
+                        <li>במיקום מקסימלי (\(x = \pm A\)): כל האנרגיה פוטנציאלית, \(v = 0\)</li>
+                        <li>במיקום שיווי משקל (\(x = 0\)): כל האנרגיה קינטית, \(v = v_{max}\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ELECTROSTATICS ==================== -->
+        <section id="electrostatics">
+            <div class="section-header">
+                <div class="section-icon green">⚛️</div>
+                <h2>אלקטרוסטטיקה (Electrostatics)</h2>
+            </div>
+
+            <div class="card">
+                <h3>מטען חשמלי</h3>
+
+                <div class="explanation">
+                    מטען חשמלי הוא תכונה בסיסית של חומר. יש שני סוגי מטען: חיובי (+) ושלילי (-).
+                    מטענים דומים דוחים, מטענים הפוכים מושכים. יחידות: קולון [C].
+                </div>
+
+                <div class="physical-meaning">
+                    המטען הבסיסי הוא מטען האלקטרון: \(e = 1.6 \times 10^{-19}\) C.
+                    כל המטענים בטבע הם כפולות שלמות של \(e\).
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>חוק קולון</h3>
+
+                <div class="formula-box key">
+                    \[\vec{F}_{12} = k\frac{q_1 q_2}{r^2}\hat{r}_{12}\]
+                </div>
+
+                <p>כאשר \(k = 9 \times 10^9 \frac{Nm^2}{C^2}\)</p>
+
+                <div class="physical-meaning">
+                    הכוח החשמלי בין שני מטענים:
+                    <ul>
+                        <li>פרופורציונלי למכפלת המטענים</li>
+                        <li>הופכי לריבוע המרחק (כמו כבידה!)</li>
+                        <li>פועל לאורך הקו שמחבר את המטענים</li>
+                        <li>חיובי = דחייה, שלילי = משיכה</li>
+                    </ul>
+                </div>
+
+                <div class="tip">
+                    שימו לב לדמיון לחוק הכבידה! ההבדל: כבידה תמיד מושכת, כוח חשמלי יכול גם לדחות.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>שדה חשמלי</h3>
+
+                <div class="explanation">
+                    במקום לחשוב על כוח בין שני מטענים, חושבים על מטען אחד ש"יוצר שדה",
+                    והמטען השני "מרגיש" את השדה. השדה קיים בכל נקודה במרחב.
+                </div>
+
+                <div class="formula-box key">
+                    \[\vec{F} = q\vec{E}\]
+                </div>
+
+                <div class="physical-meaning">
+                    השדה החשמלי \(\vec{E}\) בנקודה מסוימת הוא הכוח שהיה פועל על מטען של 1 קולון באותה נקודה.
+                    יחידות: [N/C] או [V/m].
+                </div>
+
+                <h4>שדה של מטען נקודתי</h4>
+                <div class="formula-box">
+                    \[\vec{E} = k\frac{q}{r^2}\hat{r}\]
+                </div>
+
+                <div class="tip">
+                    <strong>עקרון הסופרפוזיציה:</strong> השדה הכולל של כמה מטענים = סכום וקטורי של השדות שכל אחד יוצר
+                    בנפרד.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>פוטנציאל חשמלי</h3>
+
+                <div class="explanation">
+                    הפוטנציאל הוא "אנרגיה פוטנציאלית ליחידת מטען".
+                    זה סקלר (לא וקטור!) ולכן קל יותר לחשב מאשר שדה.
+                </div>
+
+                <div class="formula-box">
+                    \[U = q\varphi\]
+                </div>
+
+                <h4>פוטנציאל של מטען נקודתי</h4>
+                <div class="formula-box key">
+                    \[\varphi = k\frac{q}{r}\]
+                </div>
+
+                <h4>הקשר בין שדה לפוטנציאל</h4>
+                <div class="formula-box">
+                    \[\vec{E} = -\nabla\varphi = -\frac{d\varphi}{dr}\hat{r}\]
+                </div>
+
+                <div class="physical-meaning">
+                    השדה מצביע מפוטנציאל גבוה לפוטנציאל נמוך (כמו שכדור מתגלגל מגבוה לנמוך).
+                    עוצמת השדה שווה לקצב השינוי של הפוטנציאל במרחב.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>מוליכים בשיווי משקל</h3>
+
+                <div class="warning">
+                    <strong>שלושה כללים חשובים:</strong>
+                    <ol>
+                        <li>השדה בתוך המוליך = 0</li>
+                        <li>כל נקודות המוליך באותו פוטנציאל</li>
+                        <li>כל המטען העודף נמצא על פני השטח</li>
+                    </ol>
+                </div>
+
+                <div class="physical-meaning">
+                    במוליך, אלקטרונים חופשיים לזוז. אם היה שדה בפנים, הם היו זזים עד שהשדה היה מתאפס.
+                    לכן בשיווי משקל אין שדה בפנים, וכל המטען "נדחק" לשפה.
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CIRCUITS ==================== -->
+        <section id="circuits">
+            <div class="section-header">
+                <div class="section-icon orange">🔌</div>
+                <h2>קבלים ומעגלים חשמליים</h2>
+            </div>
+
+            <div class="card">
+                <h3>קבלים (Capacitors)</h3>
+
+                <div class="explanation">
+                    קבל הוא רכיב שמאחסן מטען חשמלי ואנרגיה. הוא מורכב משני מוליכים מופרדים.
+                </div>
+
+                <h4>הגדרת קיבול</h4>
+                <div class="formula-box key">
+                    \[C = \frac{Q}{V}\]
+                </div>
+
+                <div class="physical-meaning">
+                    הקיבול מודד כמה מטען הקבל יכול לאחסן עבור הפרש פוטנציאלים נתון.
+                    יחידות: פאראד [F] = [C/V]. (פאראד אחד זה הרבה מאוד - בדרך כלל משתמשים ב-μF או pF)
+                </div>
+
+                <h4>קבל לוחות מקבילים</h4>
+                <div class="formula-box">
+                    \[C = \varepsilon_0 \frac{A}{d}\]
+                </div>
+
+                <p>כאשר \(\varepsilon_0 = 8.85 \times 10^{-12} \frac{F}{m}\)</p>
+
+                <h4>אנרגיה בקבל</h4>
+                <div class="formula-box key">
+                    \[U_C = \frac{1}{2}CV^2 = \frac{Q^2}{2C} = \frac{1}{2}QV\]
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>זרם חשמלי</h3>
+
+                <div class="formula-box">
+                    \[I = \frac{dQ}{dt}\]
+                </div>
+
+                <div class="physical-meaning">
+                    זרם הוא קצב זרימת מטען. יחידות: אמפר [A] = [C/s].
+                    כיוון הזרם המוסכם הוא כיוון תנועת מטענים חיוביים (למרות שבדרך כלל אלקטרונים הם שזזים).
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>חוק אוהם</h3>
+
+                <div class="formula-box key">
+                    \[V = IR\]
+                </div>
+
+                <div class="physical-meaning">
+                    הפרש הפוטנציאלים על נגד שווה לזרם כפול ההתנגדות.
+                    יחידות התנגדות: אום [Ω] = [V/A].
+                </div>
+
+                <div class="tip">
+                    זרם זורם מפוטנציאל גבוה לפוטנציאל נמוך (דרך הנגד).
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>חוקי קירכהוף</h3>
+
+                <h4>חוק הצמתים (שימור מטען)</h4>
+                <div class="formula-box">
+                    \[\sum I_{in} = \sum I_{out}\]
+                </div>
+
+                <div class="physical-meaning">
+                    מה שנכנס לצומת חייב לצאת ממנו - מטען לא נעלם ולא נוצר.
+                </div>
+
+                <h4>חוק הלולאות (שימור אנרגיה)</h4>
+                <div class="formula-box">
+                    \[\sum V = 0 \quad \text{(בלולאה סגורה)}\]
+                </div>
+
+                <div class="physical-meaning">
+                    אם תלכו בלולאה סגורה ותסכמו את כל העליות והירידות בפוטנציאל, תחזרו לאותו פוטנציאל - סכום אפס.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>טבלת רכיבים</h3>
+
+                <table>
+                    <tr>
+                        <th>רכיב</th>
+                        <th>נפילת מתח</th>
+                        <th>הערות</th>
+                    </tr>
+                    <tr>
+                        <td>נגד</td>
+                        <td>\(V = IR\)</td>
+                        <td>זרם זורם מ+ ל-</td>
+                    </tr>
+                    <tr>
+                        <td>קבל</td>
+                        <td>\(V = Q/C\)</td>
+                        <td>פוטנציאל גבוה בלוח +</td>
+                    </tr>
+                    <tr>
+                        <td>סוללה</td>
+                        <td>\(V = \varepsilon\)</td>
+                        <td>הקו הארוך = פוטנציאל גבוה</td>
+                    </tr>
+                    <tr>
+                        <td>חוט</td>
+                        <td>\(V = 0\)</td>
+                        <td>מוליך אידאלי</td>
+                    </tr>
+                </table>
+
+                <div class="warning">
+                    <strong>כללי אצבע חשובים:</strong>
+                    <ul>
+                        <li><strong>קבל לא טעון</strong> (ברגע הראשון) → מתנהג כמו <strong>קצר</strong></li>
+                        <li><strong>קבל טעון במקסימום</strong> (אחרי זמן רב) → מתנהג כמו <strong>נתק</strong></li>
+                        <li><strong>נגד ללא זרם</strong> → מתנהג כמו <strong>קצר</strong> (אין עליו מתח)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== OPTICS ==================== -->
+        <section id="optics">
+            <div class="section-header">
+                <div class="section-icon blue">🔦</div>
+                <h2>אופטיקה גיאומטרית (Geometric Optics)</h2>
+            </div>
+
+            <div class="card">
+                <h3>שלושת חוקי האופטיקה הגיאומטרית</h3>
+
+                <h4>חוק 1: התפשטות ישרה</h4>
+                <div class="explanation">
+                    בתווך הומוגני (אחיד), אור מתפשט בקו ישר.
+                </div>
+
+                <h4>חוק 2: החזרה</h4>
+                <div class="formula-box">
+                    \[\theta_i = \theta_r\]
+                </div>
+                <div class="physical-meaning">
+                    זווית הפגיעה (ביחס לאנך) שווה לזווית ההחזרה.
+                </div>
+
+                <h4>חוק 3: שבירה (חוק סנל)</h4>
+                <div class="formula-box key">
+                    \[n_1 \sin\theta_1 = n_2 \sin\theta_2\]
+                </div>
+
+                <div class="physical-meaning">
+                    כשאור עובר מתווך אחד לאחר, הוא משנה כיוון.
+                    \(n\) הוא <strong>מקדם השבירה</strong> - מדד לכמה האור "מואט" בתווך.
+                    <ul>
+                        <li>מתווך עם n נמוך לתווך עם n גבוה: הקרן מתקרבת לאנך</li>
+                        <li>מתווך עם n גבוה לתווך עם n נמוך: הקרן מתרחקת מהאנך</li>
+                    </ul>
+                </div>
+
+                <div class="example">
+                    אוויר: \(n \approx 1\), מים: \(n \approx 1.33\), זכוכית: \(n \approx 1.5\)
+                </div>
+
+                <div class="tip">
+                    <strong>החזרה פנימית מלאה:</strong> כשאור עובר מתווך צפוף (n גבוה) לתווך דליל (n נמוך),
+                    אם זווית הפגיעה גדולה מספיק, האור יוחזר לגמרי ולא יעבור.
+                    זווית זו נקראת <strong>זווית קריטית</strong>: \(\sin\theta_c = \frac{n_2}{n_1}\)
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== STRATEGY ==================== -->
+        <section id="strategy">
+            <div class="section-header">
+                <div class="section-icon purple">🎯</div>
+                <h2>אסטרטגיה לפתרון בעיות</h2>
+            </div>
+
+            <div class="summary-box">
+                <h3>חמשת הצעדים לפתרון כל בעיה</h3>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <strong>ציירו!</strong> תרשים ברור עם כל המידע הנתון. סמנו כוחות, מהירויות, מרחקים.
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <strong>בחרו מערכת צירים</strong> - לרוב כדאי שציר אחד יהיה בכיוון התנועה או בכיוון כוח
+                            עיקרי.
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <strong>זהו את העיקרון הפיזיקלי</strong> - ניוטון? שימור אנרגיה? שימור תנע? קירכהוף?
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <strong>כתבו את המשוואות</strong> וודאו שמספר המשוואות = מספר הנעלמים.
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <strong>פתרו ובדקו</strong> - האם היחידות נכונות? האם התוצאה הגיונית?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>מתי להשתמש בכל שיטה?</h3>
+
+                <table>
+                    <tr>
+                        <th>שיטה</th>
+                        <th>מתי להשתמש</th>
+                        <th>יתרונות</th>
+                    </tr>
+                    <tr>
+                        <td><strong>חוקי ניוטון</strong></td>
+                        <td>צריך למצוא כוחות, תאוצות, או כשהזמן חשוב</td>
+                        <td>עובד תמיד, נותן את כל הפרטים</td>
+                    </tr>
+                    <tr>
+                        <td><strong>שימור אנרגיה</strong></td>
+                        <td>קשר מהירות-מיקום, אין כוחות לא-משמרים</td>
+                        <td>מדלג על הזמן, פשוט יותר</td>
+                    </tr>
+                    <tr>
+                        <td><strong>שימור תנע</strong></td>
+                        <td>התנגשויות, פיצוצים, אין כוחות חיצוניים</td>
+                        <td>לא צריך לדעת פרטי ההתנגשות</td>
+                    </tr>
+                    <tr>
+                        <td><strong>משפט עבודה-אנרגיה</strong></td>
+                        <td>יש כוחות לא-משמרים (חיכוך)</td>
+                        <td>מטפל בחיכוך בקלות</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>יחידות חשובות</h3>
+
+                <table>
+                    <tr>
+                        <th>גודל</th>
+                        <th>יחידות SI</th>
+                        <th>שווה ל-</th>
+                    </tr>
+                    <tr>
+                        <td>כוח</td>
+                        <td>ניוטון [N]</td>
+                        <td>\(kg \cdot m/s^2\)</td>
+                    </tr>
+                    <tr>
+                        <td>אנרגיה / עבודה</td>
+                        <td>ג'אול [J]</td>
+                        <td>\(N \cdot m = kg \cdot m^2/s^2\)</td>
+                    </tr>
+                    <tr>
+                        <td>הספק</td>
+                        <td>ואט [W]</td>
+                        <td>\(J/s\)</td>
+                    </tr>
+                    <tr>
+                        <td>מטען</td>
+                        <td>קולון [C]</td>
+                        <td>\(A \cdot s\)</td>
+                    </tr>
+                    <tr>
+                        <td>פוטנציאל / מתח</td>
+                        <td>וולט [V]</td>
+                        <td>\(J/C\)</td>
+                    </tr>
+                    <tr>
+                        <td>קיבול</td>
+                        <td>פאראד [F]</td>
+                        <td>\(C/V\)</td>
+                    </tr>
+                    <tr>
+                        <td>התנגדות</td>
+                        <td>אום [Ω]</td>
+                        <td>\(V/A\)</td>
+                    </tr>
+                </table>
+
+                <div class="tip">
+                    <strong>בדיקת יחידות (Dimensional Analysis):</strong>
+                    תמיד וודאו שהיחידות בשני צדי המשוואה זהות. זה יכול לעזור למצוא טעויות ולבדוק אם נוסחה הגיונית.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>קבועים פיזיקליים חשובים</h3>
+
+                <table>
+                    <tr>
+                        <th>קבוע</th>
+                        <th>סימון</th>
+                        <th>ערך</th>
+                    </tr>
+                    <tr>
+                        <td>תאוצת הכבידה</td>
+                        <td>\(g\)</td>
+                        <td>\(9.8 \, m/s^2 \approx 10 \, m/s^2\)</td>
+                    </tr>
+                    <tr>
+                        <td>קבוע הכבידה</td>
+                        <td>\(G\)</td>
+                        <td>\(6.67 \times 10^{-11} \, Nm^2/kg^2\)</td>
+                    </tr>
+                    <tr>
+                        <td>קבוע קולון</td>
+                        <td>\(k\)</td>
+                        <td>\(9 \times 10^9 \, Nm^2/C^2\)</td>
+                    </tr>
+                    <tr>
+                        <td>מטען האלקטרון</td>
+                        <td>\(e\)</td>
+                        <td>\(1.6 \times 10^{-19} \, C\)</td>
+                    </tr>
+                    <tr>
+                        <td>פרמיטיביות הריק</td>
+                        <td>\(\varepsilon_0\)</td>
+                        <td>\(8.85 \times 10^{-12} \, F/m\)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="emoji">🍀</div>
+        <h2 style="color: var(--accent-green); margin-bottom: 1rem;">בהצלחה במבחן!</h2>
+        <p>סיכום פיזיקה להנדסת תוכנה</p>
+        <p>המכללה האקדמית להנדסה בראודה - כרמיאל</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Add animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+
+</html>

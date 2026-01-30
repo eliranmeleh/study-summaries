@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סיכום מעמיק - מבוא לבינה מלאכותית</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-card-hover: #1f3460;
+            --accent-blue: #4facfe;
+            --accent-cyan: #00f2fe;
+            --accent-purple: #a855f7;
+            --accent-pink: #f472b6;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
+            --gradient-green: linear-gradient(135deg, #34d399 0%, #00f2fe 100%);
+            --gradient-orange: linear-gradient(135deg, #fb923c 0%, #fbbf24 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Heebo', 'Noto Sans Hebrew', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.9;
+            min-height: 100vh;
+            font-size: 17px;
+        }
+
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(79, 172, 254, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.05) 0%, transparent 60%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(-2%, -2%) rotate(1deg);
+            }
+        }
+
+        .top-nav {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+        }
+
+        .back-btn {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-cyan);
+        }
+
+        header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header .institution {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        nav {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 50px;
+            z-index: 999;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            list-style: none;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-icon.blue {
+            background: var(--gradient-blue);
+        }
+
+        .section-icon.purple {
+            background: var(--gradient-purple);
+        }
+
+        .section-icon.green {
+            background: var(--gradient-green);
+        }
+
+        .section-icon.orange {
+            background: var(--gradient-orange);
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin: 2.5rem 0 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        section h3::before {
+            content: '▸';
+            color: var(--accent-purple);
+        }
+
+        section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-pink);
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(79, 172, 254, 0.15);
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(168, 85, 247, 0.15));
+            border: 2px solid rgba(79, 172, 254, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 1.3rem;
+            direction: ltr;
+        }
+
+        .formula-box.key {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 191, 36, 0.2));
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 30px rgba(251, 146, 60, 0.2);
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(0, 242, 254, 0.1));
+            border-right: 5px solid var(--accent-green);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .key-insight::before {
+            content: '💡 תובנה מפתח: ';
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.15), rgba(251, 146, 60, 0.15));
+            border-right: 5px solid var(--accent-red);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning::before {
+            content: '⚠️ זהירות: ';
+            font-weight: 700;
+            color: var(--accent-red);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .exam-tip {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.08), rgba(0, 242, 254, 0.08));
+            border-right: 5px solid var(--accent-cyan);
+            border-radius: 0 16px 16px 0;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .exam-tip::before {
+            content: '📝 טיפ למבחן: ';
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .example {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(244, 114, 182, 0.1));
+            border: 2px dashed var(--accent-purple);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .example::before {
+            content: '📌 דוגמה: ';
+            font-weight: 700;
+            color: var(--accent-purple);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-by-step {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-purple);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .step-by-step h4 {
+            margin-top: 0;
+            color: var(--accent-purple);
+        }
+
+        .step-by-step ol {
+            margin: 10px 0;
+        }
+
+        .step-by-step li {
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 1.2rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(168, 85, 247, 0.2));
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        ul,
+        ol {
+            padding-right: 1.8rem;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.8rem 0;
+            color: var(--text-secondary);
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        code {
+            background: var(--bg-secondary);
+            color: var(--accent-cyan);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-item.pros {
+            border-color: var(--accent-green);
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(0, 242, 254, 0.05));
+        }
+
+        .comparison-item.cons {
+            border-color: var(--accent-red);
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.1), rgba(251, 146, 60, 0.05));
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            background: var(--bg-secondary);
+        }
+
+        footer .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            nav ul {
+                gap: 0.3rem;
+            }
+
+            nav a {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-effects"></div>
+    <div class="top-nav"><a href="../index.html" class="back-btn">→ חזרה לדף הראשי</a></div>
+
+    <header>
+        <h1>🤖 סיכום מעמיק - מבוא לבינה מלאכותית</h1>
+        <p class="subtitle">כל מה שצריך לדעת למבחן עם הסברים מפורטים</p>
+        <p class="institution">המכללה האקדמית להנדסה בראודה - כרמיאל</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#search">אלגוריתמי חיפוש</a></li>
+            <li><a href="#games">משחקים</a></li>
+            <li><a href="#mdp">MDPs</a></li>
+            <li><a href="#csp">CSPs</a></li>
+            <li><a href="#probability">הסתברות ובייס</a></li>
+            <li><a href="#dsep">D-Separation</a></li>
+            <li><a href="#inference">Variable Elimination</a></li>
+            <li><a href="#strategies">אסטרטגיות</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- SEARCH ALGORITHMS -->
+        <section id="search">
+            <div class="section-header">
+                <div class="section-icon blue">🔍</div>
+                <h2>אלגוריתמי חיפוש</h2>
+            </div>
+
+            <div class="card">
+                <h3>השוואת אלגוריתמים</h3>
+                <table>
+                    <tr>
+                        <th>אלגוריתם</th>
+                        <th>מתי להשתמש</th>
+                        <th>מה הוא עושה</th>
+                        <th>אופטימלי?</th>
+                    </tr>
+                    <tr>
+                        <td><strong>BFS</strong></td>
+                        <td>כל הקשתות באותה עלות</td>
+                        <td>מרחיב לפי רמות</td>
+                        <td>כן (לעלויות אחידות)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DFS</strong></td>
+                        <td>רוצים למצוא פתרון כלשהו מהר</td>
+                        <td>הולך לעומק עד שנתקע</td>
+                        <td>לא!</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UCS</strong></td>
+                        <td>עלויות שונות, אין היוריסטיקה</td>
+                        <td>מרחיב לפי עלות מצטברת g(n)</td>
+                        <td>כן</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A*</strong></td>
+                        <td>עלויות שונות + יש היוריסטיקה</td>
+                        <td>מרחיב לפי f(n) = g(n) + h(n)</td>
+                        <td>כן (אם h קבילה)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>A* לעומק</h3>
+                <div class="formula-box key">
+                    <strong>f(n) = g(n) + h(n)</strong>
+                </div>
+                <table>
+                    <tr>
+                        <th>מונח</th>
+                        <th>הגדרה</th>
+                        <th>איך לחשב</th>
+                    </tr>
+                    <tr>
+                        <td><code>g(n)</code></td>
+                        <td>העלות האמיתית מהשורש ל-n</td>
+                        <td>סכום עלויות הקשתות במסלול</td>
+                    </tr>
+                    <tr>
+                        <td><code>h(n)</code></td>
+                        <td>הערכה לעלות מ-n למטרה</td>
+                        <td>ניתנת בשאלה או מחושבת</td>
+                    </tr>
+                    <tr>
+                        <td><code>h*(n)</code></td>
+                        <td>העלות האמיתית מ-n למטרה</td>
+                        <td>לא ידועה - זה מה שמחפשים!</td>
+                    </tr>
+                </table>
+
+                <h4>היוריסטיקה קבילה (Admissible)</h4>
+                <div class="formula-box">
+                    היוריסטיקה קבילה אם: 0 ≤ h(n) ≤ h*(n) לכל n
+                </div>
+                <div class="key-insight">
+                    היוריסטיקה קבילה היא <strong>אופטימית</strong> - היא אף פעם לא מגזימה!
+                </div>
+
+                <h4>היוריסטיקה עקבית (Consistent)</h4>
+                <div class="formula-box">
+                    היוריסטיקה עקבית אם: h(A) ≤ c(A, C) + h(C) לכל קשת A→C
+                </div>
+                <div class="exam-tip">
+                    <strong>עקביות ⇒ קבילות</strong> (אבל לא להפך!)
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="step-by-step">
+                    <h4>🔢 איך לבדוק אם היוריסטיקה קבילה?</h4>
+                    <ol>
+                        <li><strong>מצא את h*(n)</strong> - העלות האמיתית מכל צומת למטרה</li>
+                        <li><strong>השווה</strong> - לכל צומת n בדוק: האם h(n) ≤ h*(n)?</li>
+                        <li>אם <strong>כן לכל הצמתים</strong> → קבילה</li>
+                        <li>אם יש <strong>צומת אחת שלא</strong> → לא קבילה!</li>
+                    </ol>
+                </div>
+
+                <div class="step-by-step">
+                    <h4>🔢 איך להריץ A* צעד אחר צעד</h4>
+                    <ol>
+                        <li><strong>אתחול:</strong> שים את צומת ההתחלה ב-OPEN עם f = h(start)</li>
+                        <li><strong>בחר צומת:</strong> הוצא מ-OPEN את הצומת עם f הנמוך ביותר</li>
+                        <li><strong>בדוק מטרה:</strong> אם זו המטרה - סיימנו!</li>
+                        <li><strong>הרחב:</strong> לכל שכן, חשב g ו-f והוסף ל-OPEN</li>
+                        <li><strong>חזור</strong> לשלב 2</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAMES -->
+        <section id="games">
+            <div class="section-header">
+                <div class="section-icon purple">🎮</div>
+                <h2>משחקים</h2>
+            </div>
+
+            <div class="card">
+                <h3>Minimax - הרעיון</h3>
+                <div class="key-insight">
+                    במשחק דו-שחקני:
+                    <ul>
+                        <li><strong>MAX</strong> (אני) רוצה למקסם את הציון</li>
+                        <li><strong>MIN</strong> (היריב) רוצה למזער את הציון</li>
+                    </ul>
+                    אני מניח שהיריב משחק <strong>אופטימלית</strong>!
+                </div>
+
+                <div class="step-by-step">
+                    <h4>🔢 איך לחשב Minimax</h4>
+                    <ol>
+                        <li><strong>בנה את עץ המשחק</strong> עד לעומק מסוים</li>
+                        <li><strong>הערך עלים:</strong> תן ציון לכל מצב קצה</li>
+                        <li><strong>עלה במעלה העץ:</strong>
+                            <ul>
+                                <li>צומת MAX → בחר את <strong>המקסימום</strong> מהילדים</li>
+                                <li>צומת MIN → בחר את <strong>המינימום</strong> מהילדים</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Alpha-Beta Pruning - גיזום חכם</h3>
+                <div class="formula-box">
+                    α = הערך הטוב ביותר שMAX מצא עד כה<br>
+                    β = הערך הטוב ביותר שMIN מצא עד כה
+                </div>
+
+                <table>
+                    <tr>
+                        <th>סוג צומת</th>
+                        <th>מתי לגזום</th>
+                        <th>הסבר</th>
+                    </tr>
+                    <tr>
+                        <td><strong>MAX</strong></td>
+                        <td>v ≥ β</td>
+                        <td>MIN לא יבחר בענף הזה</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MIN</strong></td>
+                        <td>v ≤ α</td>
+                        <td>MAX לא יבחר בענף הזה</td>
+                    </tr>
+                </table>
+
+                <div class="warning">
+                    <strong>סדר הילדים משנה!</strong> אם הילד הטוב ביותר נבדק ראשון, נגזום יותר.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Expectimax - כשיש אקראיות</h3>
+                <div class="key-insight">
+                    במקום שחקן MIN יש <strong>צומת הסתברות</strong> שמחשב תוחלת:
+                </div>
+                <div class="formula-box">
+                    value(chance) = Σ P(outcome) × value(outcome)
+                </div>
+                <div class="warning">
+                    <strong>אי אפשר לעשות Alpha-Beta ב-Expectimax!</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- MDP -->
+        <section id="mdp">
+            <div class="section-header">
+                <div class="section-icon green">📊</div>
+                <h2>תהליכי החלטה מרקוביאניים (MDPs)</h2>
+            </div>
+
+            <div class="card">
+                <h3>מתי MDP?</h3>
+                <div class="key-insight">
+                    MDP מתאים כאשר:
+                    <ul>
+                        <li>יש <strong>אי-ודאות בתוצאות</strong> של פעולות</li>
+                        <li>אנחנו רוצים <strong>מדיניות</strong> - מה לעשות בכל מצב</li>
+                        <li>יש <strong>תגמולים</strong> ורוצים למקסם תוחלת</li>
+                    </ul>
+                </div>
+
+                <table>
+                    <tr>
+                        <th>רכיב</th>
+                        <th>סימון</th>
+                        <th>משמעות</th>
+                    </tr>
+                    <tr>
+                        <td>מצבים</td>
+                        <td>S</td>
+                        <td>כל המצבים האפשריים</td>
+                    </tr>
+                    <tr>
+                        <td>פעולות</td>
+                        <td>A</td>
+                        <td>מה אפשר לעשות</td>
+                    </tr>
+                    <tr>
+                        <td>מעברים</td>
+                        <td>T(s, a, s')</td>
+                        <td>הסתברות להגיע ל-s'</td>
+                    </tr>
+                    <tr>
+                        <td>תגמולים</td>
+                        <td>R(s, a, s')</td>
+                        <td>התגמול שמקבלים</td>
+                    </tr>
+                    <tr>
+                        <td>היוון</td>
+                        <td>γ</td>
+                        <td>כמה חשוב העתיד (0-1)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Value Iteration</h3>
+                <div class="formula-box key">
+                    V<sub>k+1</sub>(s) = max<sub>a</sub> Σ<sub>s'</sub> T(s, a, s') × [R(s, a, s') + γ ×
+                    V<sub>k</sub>(s')]
+                </div>
+
+                <div class="step-by-step">
+                    <h4>🔢 איך להריץ Value Iteration</h4>
+                    <ol>
+                        <li><strong>אתחול:</strong> V₀(s) = 0 לכל מצב</li>
+                        <li><strong>לכל מצב s:</strong> חשב Q(s,a) לכל פעולה, קח max</li>
+                        <li><strong>חזור</strong> עד התכנסות</li>
+                        <li><strong>מדיניות:</strong> π(s) = argmax_a Q(s,a)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- CSP -->
+        <section id="csp">
+            <div class="section-header">
+                <div class="section-icon orange">🧩</div>
+                <h2>בעיות סיפוק אילוצים (CSPs)</h2>
+            </div>
+
+            <div class="card">
+                <h3>מתי CSP?</h3>
+                <div class="key-insight">
+                    CSP מתאים כאשר יש <strong>משתנים</strong>, <strong>תחומים</strong>, ו<strong>אילוצים</strong>.<br>
+                    דוגמאות: סודוקו, צביעת מפה, סידור מערכת שעות.
+                </div>
+
+                <h4>MRV - Minimum Remaining Values</h4>
+                <div class="key-insight">
+                    <strong>בחר את המשתנה עם הכי פחות ערכים חוקיים בתחום שלו.</strong>
+                </div>
+
+                <h4>LCV - Least Constraining Value</h4>
+                <div class="key-insight">
+                    <strong>בחר את הערך שפוסל הכי מעט ערכים למשתנים אחרים.</strong>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Arc Consistency</h3>
+                <div class="formula-box">
+                    קשת X → Y היא <strong>עקבית</strong> אם לכל ערך x בתחום של X,<br>
+                    קיים לפחות ערך אחד y בתחום של Y שמקיים את האילוץ.
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBABILITY -->
+        <section id="probability">
+            <div class="section-header">
+                <div class="section-icon blue">🎲</div>
+                <h2>הסתברות ורשתות בייס</h2>
+            </div>
+
+            <div class="card">
+                <h3>נוסחאות חובה</h3>
+                <table>
+                    <tr>
+                        <th>שם</th>
+                        <th>נוסחה</th>
+                        <th>מתי משתמשים</th>
+                    </tr>
+                    <tr>
+                        <td>שוליות</td>
+                        <td><code>P(X) = Σᵧ P(X,Y)</code></td>
+                        <td>להיפטר ממשתנה</td>
+                    </tr>
+                    <tr>
+                        <td>מותנית</td>
+                        <td><code>P(X|Y) = P(X,Y)/P(Y)</code></td>
+                        <td>הגדרה בסיסית</td>
+                    </tr>
+                    <tr>
+                        <td>מכפלה</td>
+                        <td><code>P(X,Y) = P(X|Y)P(Y)</code></td>
+                        <td>לפרק התפלגות משותפת</td>
+                    </tr>
+                    <tr>
+                        <td>בייס</td>
+                        <td><code>P(A|B) = P(B|A)P(A)/P(B)</code></td>
+                        <td>להפוך כיוון התניה</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>רשתות בייס</h3>
+                <div class="formula-box key">
+                    <strong>P(X₁, X₂, ..., Xₙ) = Π P(Xᵢ | parents(Xᵢ))</strong>
+                </div>
+                <div class="key-insight">
+                    כל צומת בלתי תלויה בכל הצמתים שאינם צאצאים שלה, בהינתן ההורים שלה.
+                </div>
+            </div>
+        </section>
+
+        <!-- D-SEPARATION -->
+        <section id="dsep">
+            <div class="section-header">
+                <div class="section-icon purple">🔗</div>
+                <h2>D-Separation</h2>
+            </div>
+
+            <div class="card">
+                <h3>שלושת המבנים</h3>
+                <table>
+                    <tr>
+                        <th>מבנה</th>
+                        <th>ציור</th>
+                        <th>מתי המסלול פעיל</th>
+                    </tr>
+                    <tr>
+                        <td><strong>שרשרת</strong></td>
+                        <td>A → B → C</td>
+                        <td>B <strong>לא</strong> נצפה</td>
+                    </tr>
+                    <tr>
+                        <td><strong>סיבה משותפת</strong></td>
+                        <td>A ← B → C</td>
+                        <td>B <strong>לא</strong> נצפה</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V-Structure</strong></td>
+                        <td>A → B ← C</td>
+                        <td>B או צאצא שלו <strong>כן</strong> נצפה</td>
+                    </tr>
+                </table>
+
+                <div class="warning">
+                    <strong>V-Structure הפוכה מהאחרים!</strong><br>
+                    בשרשרת וסיבה משותפת: B חוסם כשנצפה.<br>
+                    ב-V-Structure: B חוסם כש<strong>לא</strong> נצפה!
+                </div>
+
+                <div class="step-by-step">
+                    <h4>🔢 אלגוריתם D-Separation</h4>
+                    <ol>
+                        <li><strong>מצא את כל המסלולים</strong> בין X ל-Y</li>
+                        <li><strong>לכל מסלול:</strong> בדוק את כל השלשות</li>
+                        <li><strong>מסלול פעיל</strong> אם כל השלשות פעילות</li>
+                        <li>אם <strong>כל</strong> המסלולים חסומים → X ⊥ Y | Z</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- VARIABLE ELIMINATION -->
+        <section id="inference">
+            <div class="section-header">
+                <div class="section-icon green">⚙️</div>
+                <h2>Variable Elimination</h2>
+            </div>
+
+            <div class="card">
+                <div class="step-by-step">
+                    <h4>🔢 Variable Elimination צעד אחר צעד</h4>
+                    <ol>
+                        <li><strong>אתחול:</strong> צור פקטור מכל CPT, הצב ערכי עדות</li>
+                        <li><strong>לכל משתנה נסתר:</strong>
+                            <ul>
+                                <li><strong>Join:</strong> הכפל פקטורים שמזכירים אותו</li>
+                                <li><strong>Eliminate:</strong> סכום החוצה את המשתנה</li>
+                            </ul>
+                        </li>
+                        <li><strong>Join:</strong> הכפל את כל הפקטורים שנותרו</li>
+                        <li><strong>Normalize:</strong> נרמל לקבל התפלגות</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRATEGIES -->
+        <section id="strategies">
+            <div class="section-header">
+                <div class="section-icon orange">🎯</div>
+                <h2>אסטרטגיות לפתרון שאלות</h2>
+            </div>
+
+            <div class="card">
+                <h3>זיהוי סוג השאלה</h3>
+                <table>
+                    <tr>
+                        <th>מילות מפתח</th>
+                        <th>סוג הבעיה</th>
+                        <th>כלים</th>
+                    </tr>
+                    <tr>
+                        <td>מסלול, גרף, עלויות, יעד</td>
+                        <td>חיפוש</td>
+                        <td>UCS, A*</td>
+                    </tr>
+                    <tr>
+                        <td>משחק, תור, ניצחון, יריב</td>
+                        <td>משחקים</td>
+                        <td>Minimax, α-β</td>
+                    </tr>
+                    <tr>
+                        <td>הסתברות מעבר, מדיניות</td>
+                        <td>MDP</td>
+                        <td>Value Iteration</td>
+                    </tr>
+                    <tr>
+                        <td>משתנים, אילוצים, תחום</td>
+                        <td>CSP</td>
+                        <td>Backtracking, AC-3</td>
+                    </tr>
+                    <tr>
+                        <td>הסתברות, בהינתן, רשת</td>
+                        <td>בייס</td>
+                        <td>D-Sep, VE</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>טיפים למבחן</h3>
+                <div class="exam-tip"><strong>A*:</strong> תמיד רשום את g, h, f לכל צומת.</div>
+                <div class="exam-tip"><strong>Alpha-Beta:</strong> רשום α ו-β בכל צומת. סמן מתי מתבצע גיזום.</div>
+                <div class="exam-tip"><strong>MDP:</strong> הראה את Q עבור כל פעולה, ואז את ה-max.</div>
+                <div class="exam-tip"><strong>D-Separation:</strong> רשום את כל המסלולים ובדוק כל שלשה.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="emoji">🎓</div>
+        <h2 style="color: var(--accent-green); margin-bottom: 1rem;">בהצלחה במבחן!</h2>
+        <p>סיכום מבוא לבינה מלאכותית</p>
+        <p>המכללה האקדמית להנדסה בראודה - כרמיאל</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+:root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #1a1a25;
+    --bg-card-hover: #252535;
+    --accent-blue: #4facfe;
+    --accent-cyan: #00f2fe;
+    --accent-purple: #a855f7;
+    --accent-pink: #f472b6;
+    --accent-green: #34d399;
+    --accent-orange: #fb923c;
+    --accent-yellow: #fbbf24;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: #2a2a3a;
+    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f472b6 100%);
+    --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-purple: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
+    --gradient-green: linear-gradient(135deg, #34d399 0%, #00f2fe 100%);
+    --gradient-orange: linear-gradient(135deg, #fb923c 0%, #fbbf24 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+}

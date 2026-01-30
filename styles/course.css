@@ -1,0 +1,85 @@
+.top-nav {
+    background: rgba(18, 18, 26, 0.95);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(20px);
+}
+
+.back-btn {
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    color: var(--accent-cyan);
+}
+
+header {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+header .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+header .institution {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+.placeholder-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--bg-card);
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.placeholder-message .icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.placeholder-message h2 {
+    color: var(--accent-cyan);
+    margin-bottom: 1rem;
+}
+
+.placeholder-message p {
+    color: var(--text-muted);
+}
+
+footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+    background: var(--bg-secondary);
+}
