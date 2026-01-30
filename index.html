@@ -4,7 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="סיכומים מקיפים למבחנים במכללה האקדמית להנדסה בראודה - כרמיאל. קורסים בפיזיקה ובינה מלאכותית עם הסברים מפורטים ונוסחאות.">
+    <meta name="keywords" content="סיכומים, מבחנים, פיזיקה, בינה מלאכותית, מכללה אקדמית בראודה, כרמיאל">
+    <meta name="author" content="אלירן מליחוב">
+    <meta property="og:title" content="סיכומים למבחנים - הכל במקום אחד">
+    <meta property="og:description" content="סיכומים מקיפים למבחנים במכללה האקדמית להנדסה בראודה - כרמיאל. קורסים בפיזיקה ובינה מלאכותית.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eliranmeleh.github.io/study-summaries/">
+    <meta name="twitter:card" content="summary">
     <title>סיכומים למבחנים - הכל במקום אחד</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📚%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap"
@@ -14,13 +23,14 @@
 </head>
 
 <body>
-    <div class="bg-effects">
+    <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
+    <div class="bg-effects" aria-hidden="true">
         <div class="floating-orb orb-1"></div>
         <div class="floating-orb orb-2"></div>
         <div class="floating-orb orb-3"></div>
     </div>
     <header>
-        <div class="logo">📚</div>
+        <div class="logo" aria-hidden="true">📚</div>
         <h1>סיכומים למבחנים</h1>
         <p class="subtitle">כל הסיכומים שצריך להצליח בלימודים, במקום אחד מסודר ונגיש</p>
         <p class="institution">🎓 המכללה האקדמית להנדסה בראודה - כרמיאל</p>
@@ -39,13 +49,13 @@
             </div>
         </div>
     </header>
-    <main>
+    <main id="main-content">
         <div class="section-title">
             <h2>📖 הקורסים שלי</h2>
             <p>בחרו קורס כדי לצפות בסיכום המלא</p>
         </div>
         <div class="courses-grid">
-            <a href="courses/physics.html" class="course-card physics">
+            <a href="courses/physics.html" class="course-card physics" aria-label="פתח סיכום פיזיקה להנדסת תוכנה">
                 <div class="card-header">
                     <div class="card-icon physics">⚡</div>
                     <div class="card-info">
@@ -60,7 +70,7 @@
                 </div>
                 <div class="card-arrow">←</div>
             </a>
-            <a href="courses/ai.html" class="course-card ai">
+            <a href="courses/ai.html" class="course-card ai" aria-label="פתח סיכום מבוא לבינה מלאכותית">
                 <div class="card-header">
                     <div class="card-icon ai">🤖</div>
                     <div class="card-info">

@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="he">
+<html lang="he" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="סיכום מקיף למבוא לבינה מלאכותית: אלגוריתמי חיפוש, משחקים, MDP, CSP, הסתברות, רשתות בייס, D-Separation ועוד.">
+    <meta name="keywords" content="בינה מלאכותית, AI, חיפוש, A*, Minimax, Alpha-Beta, MDP, CSP, הסתברות, רשתות בייס">
+    <meta property="og:title" content="סיכום מעמיק - מבוא לבינה מלאכותית">
+    <meta property="og:description" content="סיכום מקיף למבוא לבינה מלאכותית: אלגוריתמי חיפוש, משחקים, MDP, CSP, הסתברות, רשתות בייס, D-Separation ועוד.">
+    <meta property="og:type" content="article">
     <title>סיכום מעמיק - מבוא לבינה מלאכותית</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -514,8 +520,8 @@
 </head>
 
 <body>
-    <div class="bg-effects"></div>
-    <div class="top-nav"><a href="../index.html" class="back-btn">→ חזרה לדף הראשי</a></div>
+    <div class="bg-effects" aria-hidden="true"></div>
+    <div class="top-nav"><a href="../index.html" class="back-btn" aria-label="חזרה לדף הראשי">→ חזרה לדף הראשי</a></div>
 
     <header>
         <h1>🤖 סיכום מעמיק - מבוא לבינה מלאכותית</h1>
@@ -1016,28 +1022,44 @@
     </footer>
 
     <script>
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
+        // Smooth scroll for navigation with error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        if (href && href.startsWith('#')) {
+                            const target = document.querySelector(href);
+                            if (target) {
+                                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }
+                    });
+                });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                // Intersection Observer for animations
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.style.opacity = '1';
+                                entry.target.style.transform = 'translateY(0)';
+                            }
+                        });
+                    }, { threshold: 0.1 });
+
+                    document.querySelectorAll('.card').forEach(card => {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(30px)';
+                        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        observer.observe(card);
+                    });
                 }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
+            } catch (error) {
+                console.error('Error initializing page:', error);
+            }
         });
     </script>
 </body>
